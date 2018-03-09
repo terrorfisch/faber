@@ -5,16 +5,23 @@ environment:
     # See: http://stackoverflow.com/a/13751649/163740
     CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\.ci\\run_with_env.cmd"
   matrix:
-    - PYTHON: "C:\\Python27"
-      PYTHON_VERSION: "2.7.x"
-      PYTHON_ARCH: "32"
+    #- PYTHON: "C:\\Python27"
+    #  PYTHON_VERSION: "2.7.x"
+    #  PYTHON_ARCH: "32"
 
-    - PYTHON: "C:\\Python36-x64"
+    #- PYTHON: "C:\\Python36-x64"
+    #  PYTHON_VERSION: "3.6.x"
+    #  PYTHON_ARCH: "64"
+
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      PYTHON: "C:\\Python36-x64"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "64"
-
+      #MSVC: "14.1"
+      #ARCH: x86_64
 
 install:
+  - curl -LfsS -o vswhere.exe https://github.com/Microsoft/vswhere/releases/download/2.3.7/vswhere.exe
   - "set PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - "%CMD_IN_ENV% pip install -U pytest mock six pyyaml"
 
