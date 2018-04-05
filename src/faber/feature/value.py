@@ -127,6 +127,8 @@ class composite_value(value):
     def __bool__(self):
         return any([bool(self.__dict__[s.name]) for s in self._type.subfeatures])
 
+    __nonzero__ = __bool__  # python 2
+
     def __copy__(self):
         # make sure to copy all values
         kwds = {s.name: self.__dict__[s.name].copy() for s in self._type.subfeatures
