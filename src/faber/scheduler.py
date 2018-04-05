@@ -40,6 +40,7 @@ noexec = False
 
 summary = defaultdict(int)
 
+
 def _format_count(msg, what):
     number = summary[what]
     if number:
