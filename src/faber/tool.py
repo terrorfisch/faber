@@ -162,7 +162,7 @@ def info(name, fs=()):
         mod = import_module('.{}'.format(name), 'faber.tools')
         tool = getattr(mod, name)
         tools += tool.instances(fs)
-    except:
+    except Exception:
         pass
     if not tools:
         msg = 'no tools of type {} found'.format(name)

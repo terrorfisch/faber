@@ -7,6 +7,7 @@
 # (Consult LICENSE or http://www.boost.org/LICENSE_1_0.txt)
 
 from . import scheduler
+from .feature import lazy_set
 from .feature.condition import expr as fexpr
 from .artefact import artefact
 from .module import module
@@ -114,12 +115,11 @@ def info(what, items, options, parameters, srcdir, builddir):
     """print project information, rather than performing a build.
     Parameters are the same as for the `build` function."""
 
-    options = optioncache(builddir, options)
+    options = optioncache(builddir, options, readonly=True)
     module.init([], options, parameters)
-    C.init(builddir)
-    m = module('', srcdir, builddir)
     result = True
     if what == 'goals':
+        m = module('', srcdir, builddir)
         print('known artefacts:')
         for a in sorted(artefact.iter(), key=lambda a: a.qname):
             print('  {}'.format(a.qname))
@@ -136,9 +136,9 @@ def info(what, items, options, parameters, srcdir, builddir):
             scheduler.print_dependency_graph(goals)
     elif what == 'tools':
         from . import tool
+        features = lazy_set(module.params.copy())
         for i in items:
-            tool.info(i, m.features)
-    C.finish()
+            tool.info(i, features)
     module.finish()
     return result
 
